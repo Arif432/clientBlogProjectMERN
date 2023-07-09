@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Navigate } from 'react-router-dom';
+import { UserContext } from '../UserContext';
 
 export default function LoginPage() {
+  const {setUserInfo} = useContext(UserContext) 
   const [username,setUsername] = useState('')
   const [password,setPassword] = useState('')
   const [redirect ,setRedirect] = useState(false)
@@ -17,7 +19,13 @@ async  function  loginFunc (ev) {
     });
 
     if (response.status === 200) {
-      setRedirect(true)
+
+      response.json().then(userInfo=>{
+        setUserInfo(userInfo)
+        setRedirect(true)
+
+      })
+
       alert('login successful');
     } else {
       console.log("resds",response.status);
